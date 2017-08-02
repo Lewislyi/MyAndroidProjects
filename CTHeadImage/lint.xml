@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi">
+        <ignore path="src/com/example/ctheadimage/FrontView.java" />
+        <ignore path="src/com/example/ctheadimage/HomeView.java" />
+        <ignore path="src/com/example/ctheadimage/SideView.java" />
+        <ignore path="src/com/example/ctheadimage/TopView.java" />
+    </issue>
+</lint>

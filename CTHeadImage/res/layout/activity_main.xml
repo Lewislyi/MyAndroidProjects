@@ -1,0 +1,74 @@
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"  
+    android:layout_height="fill_parent" > 
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:background="#FFFFFFFF"
+	   	android:orientation="vertical">
+		
+	  <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+       <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent" >  
+	  	<fragment
+	   	    android:id="@+id/fragment_home"
+	   	    android:name="com.example.ctheadimage.HomeView"
+	   	    android:layout_width="match_parent"
+	   	    android:layout_height="match_parent"/>
+	  
+	   	<fragment
+	   	    android:id="@+id/fragment_front"
+	   	    android:name="com.example.ctheadimage.FrontView"
+	   	    android:layout_width="fill_parent"
+	   	    android:layout_height="fill_parent"/>
+	    <fragment
+	      	android:id="@+id/fragment_top"
+	   	    android:name="com.example.ctheadimage.TopView"
+	   	    android:layout_width="fill_parent"
+	   	    android:layout_height="fill_parent"/>
+	   	<fragment
+	      	android:id="@+id/fragment_side"
+	   	    android:name="com.example.ctheadimage.SideView"
+	   	    android:layout_width="fill_parent"
+	   	    android:layout_height="fill_parent"/>-->
+	   	</FrameLayout>
+	   	</FrameLayout>
+ 		<TabWidget 
+ 		    android:id="@android:id/tabs"
+ 		    android:layout_width="fill_parent"
+ 		    android:layout_height="wrap_content"
+ 		    android:layout_weight="0.0"
+ 		    android:visibility="gone"/>
+ 		   <RadioGroup
+ 		        android:id="@+id/radiogroup"
+ 		        android:layout_width="fill_parent"
+ 		        android:layout_height="wrap_content"
+ 		        android:layout_gravity="bottom"
+ 		        android:gravity="center_vertical"
+ 		        android:orientation="horizontal">
+ 		        <RadioButton
+ 		            android:id="@+id/HomeTab"
+ 		            android:layout_weight="1"
+ 		            android:checked="true"
+ 		            android:text="HOME"/>
+ 		        <RadioButton
+ 		            android:id="@+id/FrontTab"
+ 		            android:layout_weight="1"
+ 		            android:text="FRONT"/>
+ 		         <RadioButton
+ 		            android:id="@+id/TopTab"
+ 		            android:layout_weight="1"
+ 		            android:text="TOP"/>
+ 		         <RadioButton
+ 		            android:id="@+id/SideTab"
+ 		            android:layout_weight="1"
+ 		            android:text="SIDE"/>           
+ 		    </RadioGroup>   
+	</LinearLayout>
+</TabHost>
