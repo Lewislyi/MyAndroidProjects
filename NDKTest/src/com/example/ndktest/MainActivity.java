@@ -9,15 +9,16 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
-
+	hellojni m_jni = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		TextView textview = (TextView) findViewById(R.id.ndkstring);
 		//tv.setText(new hellojni().NDKTestFromJNI());
-		textview.setText("UID:" + new Unix().getuid() + " " + new hellojni().NDKTestFromJNI());
-		
+		//textview.setText("UID:" + new Unix().getuid() + " " + new hellojni().NDKTestFromJNI());
+		m_jni = new hellojni();
+		m_jni.readFromAssets(getAssets(),"CThead");
 	}
 
 	@Override

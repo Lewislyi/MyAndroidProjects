@@ -15,6 +15,8 @@ extern "C" {
 JNIEXPORT jstring JNICALL Java_com_example_ndktest_hellojni_NDKTestFromJNI
   (JNIEnv *, jobject);
 
+void Java_com_example_ndktest_hellojni_readFromAssets(JNIEnv* env,jclass tis
+,jobject assetManager,jstring filename)
 #ifdef __cplusplus
 }
 #endif
