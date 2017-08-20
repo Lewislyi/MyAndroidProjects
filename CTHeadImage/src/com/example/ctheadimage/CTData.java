@@ -22,13 +22,13 @@ public class CTData extends Application{
 	private short min, max;
 	private static CTData instance;
 	private CTHeadDataBase dbHelper;
-	
+	private CTheadJNI m_ctheadjni = null;
 	private CTData(){
-		this.cthead = new short[113][256][256];
+		//this.cthead = new short[113][256][256];
 		//this.hashMap = new HashMap<Short, Integer>();
 		//this.histogram = new HashMap<Short, Float>();
-		this.min =0;
-		this.max =0;
+		//this.min =0;
+		//this.max =0;
 		instance = null;
 	}
 	public static CTData getInstance(){
@@ -44,120 +44,150 @@ public class CTData extends Application{
 	
 	//将2bytes CT图像转成 4bytes数据图像然后创建bitmap，第一个byte为0xff，2-4btye数据映射成【0-255】灰度级别的图像数据
     //mode: 1: Front 2: Top 3: Side
-	public Bitmap createBitmap(int slice, int mode, int highlight){ 
+	public Bitmap createBitmap(int slice, int mode, int highlight){
+		if (m_ctheadjni == null)
+			return null;
 		int width, height;
-        Bitmap bmp = null; 
-		if(cthead == null){
-			return bmp;
-		} 
+		int[] color = new int[512*512];
 		switch(mode){
 			case 1:
-				width = 256;
-				height = 113;
+				m_ctheadjni.readFrontData(slice, color, color.length);
 				break;
 			case 2:
-				width = 256;
-				height = 256;
-				break;
-			case 3:
-				width = 256;
-				height = 113;
+				m_ctheadjni.readTopData(slice, color, color.length);
 				break;
 			default:
-				width = 256;
-				height = 256;
+				m_ctheadjni.readSideData(slice, color, color.length);
 				break;
 		}
-    	int[] color = new int[width * height];
-    	int nIndex = 0, k = 0;
-    	byte col;
-    	short datum;
-    	for(int i = 0; i < height; i++){
-    		for(int j = 0; j < width; j++){
-    			if(nIndex < height * width){
-    				if(mode == 1){
-    					if(highlight != 0){
-	    					k = 0;
-	    					datum = cthead[i][k][j];
-	    					for(k = 0; k < 256; k ++){
-	    						if(cthead[i][k][j] > datum)
-	    							datum = cthead[i][k][j];
-	    					}
-    					}else{
-    						datum = cthead[i][slice][j];
-    					}
-    				}
-    				else if(mode == 2){
-    					if(highlight != 0){
-        					k = 0;
-        					datum = cthead[k][i][j];
-        					for(k = 0; k < 113; k ++){
-        						if(cthead[k][i][j] > datum)
-        							datum = cthead[k][i][j];
-        					}
-    					}else{
-    						datum = cthead[slice][i][j];
-    					}
-    				}
-    				else{
-    					if(highlight != 0){
-        					k = 0;
-        					datum = cthead[i][j][k];
-        					for(k = 0; k < 256; k ++){
-        						if(cthead[i][j][k] > datum)
-        							datum = cthead[i][j][k];
-        					}
-    					}else{
-    						datum = cthead[i][j][slice];
-    					}
-    				}
-    				/*
-    				col=(byte)(255.0f*((float)datum-(float)min)/((float)(max-min)));
-    				color[nIndex] = (col << 16 & 0x00FF0000) |   
-                    (col << 8 & 0x0000FF00 ) |   
-                    (col & 0x000000FF ) |   
-                     0xFF000000;*/
-    				//convertToColor(datum, color, width, height);
-    				//int tmp =  convertToColor(datum);
-    				color[nIndex++] = convertToColor(datum);
-    			}
-    			else
-    				break;
-    		}	
-    	}
-    	int newColor[] = convertTo512(color, width, height);
-    	if(highlight == 3)
-    		createHistogram(newColor);
+    	Bitmap bmp = null; 
         try {  
-        	bmp = Bitmap.createBitmap(newColor, 0, 512, 512, 512,   
+        	bmp = Bitmap.createBitmap(color, 0, 512, 512, 512,   
                     Bitmap.Config.RGB_565);  
         } catch (Exception e) {  
             // TODO: handle exception  
             return null;  
         }                 
         return bmp;  
-    }
+		
+	}
+//	public Bitmap createBitmap(int slice, int mode, int highlight){ 
+//		int width, height;
+//        Bitmap bmp = null; 
+//		if(cthead == null){
+//			return bmp;
+//		} 
+//		switch(mode){
+//			case 1:
+//				width = 256;
+//				height = 113;
+//				break;
+//			case 2:
+//				width = 256;
+//				height = 256;
+//				break;
+//			case 3:
+//				width = 256;
+//				height = 113;
+//				break;
+//			default:
+//				width = 256;
+//				height = 256;
+//				break;
+//		}
+//    	int[] color = new int[width * height];
+//    	int nIndex = 0, k = 0;
+//    	byte col;
+//    	short datum;    	
+////    	for(int i = 0; i < height; i++){
+////    		for(int j = 0; j < width; j++){
+////    			if(nIndex < height * width){
+////    				if(mode == 1){
+////    					if(highlight != 0){
+////	    					k = 0;
+////	    					datum = cthead[i][k][j];
+////	    					for(k = 0; k < 256; k ++){
+////	    						if(cthead[i][k][j] > datum)
+////	    							datum = cthead[i][k][j];
+////	    					}
+////    					}else{
+////    						datum = cthead[i][slice][j];
+////    					}
+////    				}
+////    				else if(mode == 2){
+////    					if(highlight != 0){
+////        					k = 0;
+////        					datum = cthead[k][i][j];
+////        					for(k = 0; k < 113; k ++){
+////        						if(cthead[k][i][j] > datum)
+////        							datum = cthead[k][i][j];
+////        					}
+////    					}else{
+////    						datum = cthead[slice][i][j];
+////    					}
+////    				}
+////    				else{
+////    					if(highlight != 0){
+////        					k = 0;
+////        					datum = cthead[i][j][k];
+////        					for(k = 0; k < 256; k ++){
+////        						if(cthead[i][j][k] > datum)
+////        							datum = cthead[i][j][k];
+////        					}
+////    					}else{
+////    						datum = cthead[i][j][slice];
+////    					}
+////    				}
+////    				/*
+////    				col=(byte)(255.0f*((float)datum-(float)min)/((float)(max-min)));
+////    				color[nIndex] = (col << 16 & 0x00FF0000) |   
+////                    (col << 8 & 0x0000FF00 ) |   
+////                    (col & 0x000000FF ) |   
+////                     0xFF000000;*/
+////    				//convertToColor(datum, color, width, height);
+////    				//int tmp =  convertToColor(datum);
+////    				color[nIndex++] = convertToColor(datum);
+////    			}
+////    			else
+////    				break;
+////    		}
+////    	}
+//    	int newColor[] = convertTo512(color, width, height);
+//    	if(highlight == 3)
+//    		createHistogram(newColor);
+//        try {  
+//        	bmp = Bitmap.createBitmap(newColor, 0, 512, 512, 512,   
+//                    Bitmap.Config.RGB_565);  
+//        } catch (Exception e) {  
+//            // TODO: handle exception  
+//            return null;  
+//        }                 
+//        return bmp;  
+//    }
 		
 	public int createCTData(Context context) throws IOException{		
-		int i, j, k;
-		int b1,b2;
-		short read;
-		InputStream in = context.getResources().getAssets().open("CThead");
-		DataInputStream buffer = new DataInputStream(new BufferedInputStream(in));
-		//loop through the data reading it in
-		for (k=0; k<113; k++) {
-			for (j=0; j<256; j++) {
-				for (i=0; i<256; i++) {
-					//because the Endianess is wrong, it needs to be read byte at a time and swapped
-					b1=((int)buffer.readByte()) & 0xff; //the 0xff is because Java does not have unsigned types (C++ is so much easier!)
-					b2=((int)buffer.readByte()) & 0xff; //the 0xff is because Java does not have unsigned types (C++ is so much easier!)
-					read=(short)((b2<<8) | b1); //and swizzle the bytes around
-					if (read<min) min=read; //update the minimum
-					if (read>max) max=read; //update the maximum
-					cthead[k][j][i]=read; //put the short into memory (in C++ you can replace all this code with one fread)
-				}
-			}
-		}	
+//		int i, j, k;
+//		int b1,b2;
+//		short read;
+//		InputStream in = context.getResources().getAssets().open("CThead");
+//		DataInputStream buffer = new DataInputStream(new BufferedInputStream(in));
+//		//loop through the data reading it in
+//		for (k=0; k<113; k++) {
+//			for (j=0; j<256; j++) {
+//				for (i=0; i<256; i++) {
+//					//because the Endianess is wrong, it needs to be read byte at a time and swapped
+//					b1=((int)buffer.readByte()) & 0xff; //the 0xff is because Java does not have unsigned types (C++ is so much easier!)
+//					b2=((int)buffer.readByte()) & 0xff; //the 0xff is because Java does not have unsigned types (C++ is so much easier!)
+//					read=(short)((b2<<8) | b1); //and swizzle the bytes around
+//					if (read<min) min=read; //update the minimum
+//					if (read>max) max=read; //update the maximum
+//					cthead[k][j][i]=read; //put the short into memory (in C++ you can replace all this code with one fread)
+//				}
+//			}
+//		}
+		if(m_ctheadjni == null)
+			m_ctheadjni = new CTheadJNI();
+		m_ctheadjni.readFromAssets(context.getResources().getAssets(), "CThead");
 		return 0;
 	}
 	

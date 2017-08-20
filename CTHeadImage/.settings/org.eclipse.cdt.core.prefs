@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+environment/project/com.android.toolchain.gcc.484485621/ANDROID_NDK_HOME/delimiter=\:
+environment/project/com.android.toolchain.gcc.484485621/ANDROID_NDK_HOME/operation=replace
+environment/project/com.android.toolchain.gcc.484485621/ANDROID_NDK_HOME/value=/home/lewis/workspace/Android/android-ndk-r15c/
+environment/project/com.android.toolchain.gcc.484485621/append=true
+environment/project/com.android.toolchain.gcc.484485621/appendContributed=true

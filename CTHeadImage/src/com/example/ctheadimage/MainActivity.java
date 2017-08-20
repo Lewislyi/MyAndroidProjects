@@ -13,12 +13,13 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
  public class MainActivity extends Activity {
 	private TabHost tabhost;
 	private RadioGroup radiogroup;
-	
+	CTheadJNI m_ctheadjni = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+		m_ctheadjni = new CTheadJNI();
+		m_ctheadjni.readFromAssets(getAssets(), "CThead");
 		radiogroup = (RadioGroup)findViewById(R.id.radiogroup);
 		tabhost = (TabHost)findViewById(android.R.id.tabhost); 
 		tabhost.setup();
@@ -67,7 +68,16 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
         });
         Intent startIntent = new Intent(this, CTHeadService.class);
         startService(startIntent);
-        
+	}
+	
+	@Override
+	protected void onDestroy(){
+		Intent stopIntent = new Intent(this, CTHeadService.class);
+		stopService(stopIntent);
+		super.onDestroy();
+	}
+	static{
+		System.loadLibrary("CTHeadImage");
 	}
 	
 }
