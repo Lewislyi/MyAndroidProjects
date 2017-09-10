@@ -56,3 +56,32 @@ JNIEXPORT void JNICALL Java_com_example_ctheadimage_CTheadJNI_readFrontData(JNIE
 	int *arrData = env->GetIntArrayElements(arrFront, &iscopy);
 	CTheadModel::GetInstance()->GetFrontImage(slide, arrData, size);
 }
+
+JNIEXPORT void JNICALL Java_com_example_ctheadimage_CTheadJNI_readSideHL(JNIEnv *env, jobject obj, jintArray arrSideHL, jint size)
+{
+	jboolean iscopy;
+	int *arrData = env->GetIntArrayElements(arrSideHL, &iscopy);
+	CTheadModel::GetInstance()->GetSideHighLight(arrData, size);
+}
+
+JNIEXPORT void JNICALL Java_com_example_ctheadimage_CTheadJNI_readTopHL(JNIEnv *env, jobject obj, jintArray arrTopHL, jint size)
+{
+	jboolean iscopy;
+	int *arrData = env->GetIntArrayElements(arrTopHL, &iscopy);
+	CTheadModel::GetInstance()->GetTopHighLight(arrData, size);
+}
+
+JNIEXPORT void JNICALL Java_com_example_ctheadimage_CTheadJNI_readFrontHL(JNIEnv *env, jobject obj, jintArray arrFrontHL, jint size)
+{
+	jboolean iscopy;
+	int *arrData = env->GetIntArrayElements(arrFrontHL, &iscopy);
+	CTheadModel::GetInstance()->GetFrontHighLight(arrData, size);
+}
+
+JNIEXPORT void JNICALL Java_com_example_ctheadimage_CTheadJNI_readHistogram(JNIEnv *env, jobject obj, jintArray arrCTData, jint size)
+{
+	jboolean iscopy;
+	int *arrData = env->GetIntArrayElements(arrCTData, &iscopy);
+	CTheadModel::GetInstance()->GetHistogram(arrData, size);
+}
+

@@ -51,15 +51,26 @@ public class CTData extends Application{
 		int[] color = new int[512*512];
 		switch(mode){
 			case 1:
-				m_ctheadjni.readFrontData(slice, color, color.length);
+				if(highlight == 1 || highlight == 3)
+					m_ctheadjni.readFrontHL(color, color.length);
+				else
+					m_ctheadjni.readFrontData(slice, color, color.length);
 				break;
 			case 2:
-				m_ctheadjni.readTopData(slice, color, color.length);
+				if(highlight == 1 || highlight == 3)
+					m_ctheadjni.readTopHL(color, color.length);
+				else
+					m_ctheadjni.readTopData(slice, color, color.length);
 				break;
 			default:
-				m_ctheadjni.readSideData(slice, color, color.length);
+				if(highlight == 1 || highlight == 3)
+					m_ctheadjni.readSideHL(color, color.length);
+				else
+					m_ctheadjni.readSideData(slice, color, color.length);
 				break;
 		}
+		if(highlight == 3)
+			m_ctheadjni.readHistogram(color, color.length);
     	Bitmap bmp = null; 
         try {  
         	bmp = Bitmap.createBitmap(color, 0, 512, 512, 512,   

@@ -11,7 +11,6 @@
 #include <jni.h>
 #include <android/log.h>
 #include <android/asset_manager_jni.h>
-
 class CTheadModel{
 public:
 	CTheadModel();
@@ -20,12 +19,16 @@ public:
 	void GetSideImage(int slide, int arrSideImg[], int size);
 	void GetTopImage(int slide, int arrTopImg[], int size);
 	void GetFrontImage(int slide, int arrFrontImg[], int size);
-	char *GetHistogram(int width, int height);
+	void GetFrontHighLight(int arrFrontImg[], int size);
+	void GetTopHighLight(int arrTopImg[], int size);
+	void GetSideHighLight(int arrSideImg[], int size);
+	void GetHistogram(int corData[], int nSize);
 	static CTheadModel *GetInstance();
 	short m_Max;
 	short m_Min;
 private:
-	short m_cthead[113][256][256];
+	short m_cthead[113][256][256]={0};
+	int m_ctcolor[113][256][256]={0};
 	static CTheadModel *instance;
 };
 

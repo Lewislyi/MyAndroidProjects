@@ -31,6 +31,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ANDROID_NDK_HOME}/platforms/android-19/arch-arm/usr/include/linux/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:${ANDROID_NDK_HOME}/platforms/android-22/arch-arm/usr/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ANDROID_NDK_HOME}/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.8/include/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ANDROID_NDK_HOME}/sources/cxx-stl/stlport/stlport/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ANDROID_NDK_HOME}/sources/cxx-stl/stlport/stlport/stl/&quot;"/>
 								</option>
 								<inputType id="com.android.gcc.inputType.695506681" superClass="com.android.gcc.inputType"/>
 							</tool>
